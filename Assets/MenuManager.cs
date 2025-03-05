@@ -10,16 +10,8 @@ public class MenuManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        int activeMenus = 0;
-        foreach (var menu in menus){
-            if (menu.activeInHierarchy){
-                activeMenus++;
-            }
-        }
-        if (activeMenus != 1){
-            DeactivateMenus();
-            menus[0].SetActive(true);
-        }
+        DeactivateMenus();
+        menus[0].SetActive(true);
     }
 
     // Update is called once per frame

@@ -45,8 +45,12 @@ public class WebSocket_Phone_Client : MonoBehaviour
         ws.Send("value:" + value);
     }
 
-    public void SendWebsocketPhoneCall(int callID){
+    public void SendWebSocketPhoneCall(int callID){
         ws.Send("phonecall:" + callID);
+    }
+
+    public void SendWebSocketScanCard(int cardID){
+        ws.Send("card:" + cardID);
     }
 
     // Update is called once per frame
