@@ -53,6 +53,10 @@ public class WebSocket_Phone_Client : MonoBehaviour
         ws.Send("card:" + cardID);
     }
 
+    public void SendWebSocetCode(string code){
+        ws.Send("code:" + code);
+    }
+
     // Update is called once per frame
     void Update()
     {
