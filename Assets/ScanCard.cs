@@ -22,8 +22,12 @@ public class ScanCard : MonoBehaviour
     [SerializeField]
     [Tooltip("per second")]
     float progressSpeed = 1;
-    [Range(0f, 1f)]
+    [Range(0f, 100f)]
     public float progress;
+    [SerializeField]
+    float progressGoal;
+    [SerializeField]
+    float progressPadding;
 
     [Header("UI")]
     [SerializeField]
@@ -31,6 +35,12 @@ public class ScanCard : MonoBehaviour
     bool scanned = false;
     [SerializeField]
     TextMeshProUGUI statusText;
+
+    [SerializeField]
+    float timer = 0;
+    [SerializeField]
+    float timerMax = 1;
+    bool swiping = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -43,6 +53,17 @@ public class ScanCard : MonoBehaviour
         acceleration = Vector3.Magnitude(Input.gyro.userAcceleration);
         print(acceleration);
         test.transform.position = Input.gyro.userAcceleration;
+
+        // if (!swiping && acceleration > 0.2f){
+        //     StartSwiping();
+        // }
+        // if (swiping){
+        //     SwipeStep();
+        // }
+
+        //^new not done yet
+
+
         if (progress <= 0){
             scanned = false;
         }
@@ -71,9 +92,41 @@ public class ScanCard : MonoBehaviour
         SetUI();
     }
 
+    void StartSwiping(){
+        timer = 0;
+        progress = 0;
+        swiping = true;
+    }
+    void SwipeStep(){
+        timer += Time.deltaTime;
+        progress += acceleration;
+        if (timer >= timerMax){
+            SwipeEnd();
+        }
+    }
+    void SwipeEnd(){
+        timer = timerMax;
+        swiping = false;
+        if (progress < progressGoal - progressPadding){
+            print("tooslow");
+            FailScan();
+        }
+        else if (progress > progressGoal + progressPadding){
+            print("too fast");
+            FailScan();
+        }
+        else{
+            Scan();
+        }
+    }
+
     void Scan(){
         scanned = true;
         webSocket_Phone_Client.SendWebSocketScanCard(0);
+    }
+
+    void FailScan(){
+        webSocket_Phone_Client.SendWebSocketScanCard(-1);
     }
 
     void SetUI(){
