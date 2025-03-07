@@ -7483,12 +7483,12 @@ MonoBehaviour:
   maxAcceleration: 0.9
   progressSpeed: 1.5
   progress: 0
-  progressGoal: 0
-  progressPadding: 0
+  progressGoal: 1
   progressBar: {fileID: 1152189652}
   statusText: {fileID: 1751236183}
   timer: 0
   timerMax: 1
+  timerPadding: 0.3
 --- !u!114 &1899106822
 MonoBehaviour:
   m_ObjectHideFlags: 0

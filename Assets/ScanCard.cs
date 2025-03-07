@@ -26,8 +26,6 @@ public class ScanCard : MonoBehaviour
     public float progress;
     [SerializeField]
     float progressGoal;
-    [SerializeField]
-    float progressPadding;
 
     [Header("UI")]
     [SerializeField]
@@ -40,6 +38,8 @@ public class ScanCard : MonoBehaviour
     float timer = 0;
     [SerializeField]
     float timerMax = 1;
+    [SerializeField]
+    float timerPadding = 0.3f;
     bool swiping = false;
     // Start is called before the first frame update
     void Start()
@@ -51,45 +51,47 @@ public class ScanCard : MonoBehaviour
     void Update()
     {
         acceleration = Vector3.Magnitude(Input.gyro.userAcceleration);
-        print(acceleration);
+        //print(acceleration);
         test.transform.position = Input.gyro.userAcceleration;
 
-        // if (!swiping && acceleration > 0.2f){
-        //     StartSwiping();
-        // }
-        // if (swiping){
-        //     SwipeStep();
-        // }
+        if (!swiping && acceleration > 0.2f && progress != progressGoal){
+            StartSwiping();
+        }
+        if (swiping){
+            SwipeStep();
+        }
+
+        NewSetUI();
 
         //^new not done yet
 
 
-        if (progress <= 0){
-            scanned = false;
-        }
-        if (acceleration < minAcceleration){
-            print("Too Slow");
-            progress -= progressSpeed * 2 * Time.deltaTime;
-        }
-        else if (acceleration > maxAcceleration){
-            print("Too Fast");
-            progress -= progressSpeed * 2 * Time.deltaTime;
-        }
-        else if (scanned){
-            print("scanned");
-            progress -= progressSpeed * 2 * Time.deltaTime;
-        }
-        else{
-            print("In Range");
-            if (!scanned){
-                progress += progressSpeed * Time.deltaTime;
-            }
-            if (progress >= 1){
-                Scan();
-            }
-        }
-        progress = Mathf.Clamp(progress,0f,1f);
-        SetUI();
+        // if (progress <= 0){
+        //     scanned = false;
+        // }
+        // if (acceleration < minAcceleration){
+        //     print("Too Slow");
+        //     progress -= progressSpeed * 2 * Time.deltaTime;
+        // }
+        // else if (acceleration > maxAcceleration){
+        //     print("Too Fast");
+        //     progress -= progressSpeed * 2 * Time.deltaTime;
+        // }
+        // else if (scanned){
+        //     print("scanned");
+        //     progress -= progressSpeed * 2 * Time.deltaTime;
+        // }
+        // else{
+        //     print("In Range");
+        //     if (!scanned){
+        //         progress += progressSpeed * Time.deltaTime;
+        //     }
+        //     if (progress >= 1){
+        //         Scan();
+        //     }
+        // }
+        // progress = Mathf.Clamp(progress,0f,1f);
+        // SetUI();
     }
 
     void StartSwiping(){
@@ -100,24 +102,34 @@ public class ScanCard : MonoBehaviour
     void SwipeStep(){
         timer += Time.deltaTime;
         progress += acceleration;
-        if (timer >= timerMax){
+        if (progress >= progressGoal){
+            progress = progressGoal;
             SwipeEnd();
         }
     }
     void SwipeEnd(){
-        timer = timerMax;
+        progress = progressGoal;
         swiping = false;
-        if (progress < progressGoal - progressPadding){
-            print("tooslow");
+        if (timer < timerMax - timerPadding){
+            //print("toofast");
             FailScan();
         }
-        else if (progress > progressGoal + progressPadding){
-            print("too fast");
+        else if (timer > timerMax + timerPadding){
+            //print("too slow");
             FailScan();
         }
         else{
             Scan();
         }
+        StartCoroutine(ResetValues(2));
+    }
+
+    IEnumerator ResetValues(int seconds){
+        yield return new WaitForSeconds(seconds);
+        print("reset");
+        scanned = false;
+        timer = 0;
+        progress = 0;
     }
 
     void Scan(){
@@ -127,6 +139,30 @@ public class ScanCard : MonoBehaviour
 
     void FailScan(){
         webSocket_Phone_Client.SendWebSocketScanCard(-1);
+    }
+
+    void NewSetUI(){
+        progressBar.value = progress;
+        progressBar.maxValue = progressGoal;
+        if (scanned){
+            statusText.text = "Scanned";
+        }
+        else if (progress == progressGoal){
+            if (timer < timerMax - timerPadding){
+                print("tooslow");
+                statusText.text = "Too Fast";
+                FailScan();
+            }
+            else if (timer > timerMax + timerPadding ){
+                print("too fast");
+                statusText.text = "Too Slow";
+                FailScan();
+            }
+        }
+        else{
+            statusText.text = "Move Phone To Scan";
+        }
+
     }
 
     void SetUI(){
