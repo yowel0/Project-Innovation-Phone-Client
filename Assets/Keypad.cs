@@ -1,6 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
 using TMPro;
+using Unity.CodeEditor;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Keypad : MonoBehaviour
@@ -11,6 +15,25 @@ public class Keypad : MonoBehaviour
     string code = "";
     [SerializeField]
     TextMeshProUGUI text;
+    
+    EVM_Case evm;
+    void OnEnable()
+    {
+        evm = FindAnyObjectByType<EVM_Case>();
+        for (int i = 0; i < evm.numberButtons.Count(); i++){
+            string iString = (i + 1).ToString();
+            int iInt = int.Parse(iString);
+            evm.ButtonAddListener(evm.numberButtons[i],delegate{AddInt(iInt);});
+        }
+        ResetCode();
+    }
+
+    void OnDisable()
+    {
+        evm = FindAnyObjectByType<EVM_Case>();
+        evm.AllButtonsRemoveAllListeners();
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -24,7 +47,11 @@ public class Keypad : MonoBehaviour
     }
 
     public void AddInt(int _int){
+        if (code != ""){
+            code = code.Remove(0,1);
+        }
         code += _int.ToString();
+        print(code);
         SetUI();
     }
 
@@ -34,8 +61,8 @@ public class Keypad : MonoBehaviour
     }
 
     public void ResetCode(){
-        text.text = "####";
-        code = "";
+        code = "####";
+        SetUI();
     }
 
     void SetUI(){

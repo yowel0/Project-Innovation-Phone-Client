@@ -8,7 +8,7 @@ using System.Diagnostics;
 
 public class WebSocket_Phone_Client : MonoBehaviour
 {
-    WebSocket ws;
+    public WebSocket ws;
     [SerializeField]
     CallManager callManager;
     private readonly ConcurrentQueue<Action> _actions = new ConcurrentQueue<Action>();

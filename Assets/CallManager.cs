@@ -1,15 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class CallManager : MonoBehaviour
 {
     [SerializeField]
     PhoneCall callPrefab;
+    Queue<int> callQueue = new Queue<int>();
     [SerializeField]
-    Canvas canvas;
+    RectTransform callParent;
     [SerializeField]
     List<AudioClip> audioClips;
+    PhoneCall activeCall;
     // Start is called before the first frame update
     void Start()
     {
@@ -19,12 +22,18 @@ public class CallManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (activeCall == null && callQueue.Count > 0){
+            StartNextCall();
+        }
     }
 
     public void StartCall(int _callID){
-        PhoneCall call = Instantiate(callPrefab,canvas.transform);
-        call.voiceLine = audioClips[_callID];
-        //Handheld.Vibrate();
+        callQueue.Enqueue(_callID);
+    }
+
+    void StartNextCall(){
+        //activeCall = Instantiate(callPrefab,callParent.transform);
+        activeCall = Instantiate(callPrefab,callParent.transform);
+        activeCall.voiceLine = audioClips[callQueue.Dequeue()];
     }
 }

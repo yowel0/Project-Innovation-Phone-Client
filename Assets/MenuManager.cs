@@ -1,12 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class MenuManager : MonoBehaviour
 {
     [SerializeField]
     [Tooltip("First menu will be active first")]
-    List<GameObject> menus;
+    public List<GameObject> menus;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -28,6 +31,14 @@ public class MenuManager : MonoBehaviour
         else{
             Debug.LogWarning("Menu is not assigned to the menus list");
         }
+    }
+
+    public void ActivateMenu(int _menuIndex){
+        ActivateMenu(menus[_menuIndex]);
+    }
+
+    public void ActivateHome(){
+        ActivateMenu(0);
     }
 
     void DeactivateMenus(){
