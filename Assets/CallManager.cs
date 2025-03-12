@@ -35,5 +35,12 @@ public class CallManager : MonoBehaviour
         //activeCall = Instantiate(callPrefab,callParent.transform);
         activeCall = Instantiate(callPrefab,callParent.transform);
         activeCall.voiceLine = audioClips[callQueue.Dequeue()];
+        Handheld.Vibrate();
+    }
+
+    public void StopAllCalls(){
+        callQueue.Clear();
+        //activeCall.GetComponent<AudioSource>().Stop();
+        Destroy(activeCall.gameObject);
     }
 }

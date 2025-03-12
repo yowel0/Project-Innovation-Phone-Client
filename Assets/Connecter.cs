@@ -22,18 +22,24 @@ public class Connecter : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        if (CheckConnection()){
+            canvas.enabled = true;
+            canvas.gameObject.SetActive(true);
+            gameObject.SetActive(false);
+        }
     }
 
     public void ConnectWebsocket(){
             if(ConnectToUrl(inputField.text)){
-                canvas.enabled = true;
-                canvas.gameObject.SetActive(true);
-                gameObject.SetActive(false);
+                EnableEVM();
             }
     }
 
     bool ConnectToUrl(string URL){
+        if (URL == "test"){
+            EnableEVM();
+            return false;
+        }
         if (CheckConnection()){
             print("already Connected");
             return true;
@@ -42,8 +48,7 @@ public class Connecter : MonoBehaviour
             if (URL == ""){
                 URL = "localhost:8080";
             }
-            WS_Phone_Client.ws = new WebSocket("ws://" + URL);
-            WS_Phone_Client.ws.Connect();
+            WS_Phone_Client.ConnectWebSocket(URL);
             print("conncention: "+ CheckConnection());
             if (CheckConnection()){
                 return true;
@@ -55,6 +60,17 @@ public class Connecter : MonoBehaviour
     }
 
     bool CheckConnection(){
-        return WS_Phone_Client.ws.IsAlive;
+        if (WS_Phone_Client.ws == null){
+            return false;
+        }
+        else{
+            return WS_Phone_Client.ws.IsAlive;
+        }
+    }
+
+    void EnableEVM(){
+        canvas.enabled = true;
+        canvas.gameObject.SetActive(true);
+        gameObject.SetActive(false);
     }
 }

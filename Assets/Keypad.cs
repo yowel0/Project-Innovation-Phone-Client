@@ -1,10 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using TMPro;
-using Unity.CodeEditor;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class Keypad : MonoBehaviour
@@ -26,12 +21,16 @@ public class Keypad : MonoBehaviour
             evm.ButtonAddListener(evm.numberButtons[i],delegate{AddInt(iInt);});
         }
         ResetCode();
+
+        evm.ButtonAddListener(evm.mainButtons[0],ResetCode);
+        evm.ButtonAddListener(evm.mainButtons[2],ConfirmCode);
     }
 
     void OnDisable()
     {
-        evm = FindAnyObjectByType<EVM_Case>();
         evm.AllButtonsRemoveAllListeners();
+        evm.ButtonRemoveAllListeners(evm.mainButtons[0]);
+        evm.ButtonRemoveAllListeners(evm.mainButtons[2]);
     }
 
     // Start is called before the first frame update

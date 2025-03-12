@@ -15,16 +15,39 @@ public class WebSocket_Phone_Client : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        ws = new WebSocket("ws://localhost:8080");
+        
+    }
+
+    public void ConnectWebSocket(string URL){
+        ws = new WebSocket("ws://"+URL);
         ws.Connect();
         print("connection status: " + ws.IsAlive);
         ws.OnMessage += (sender, e) =>
         {
             print("Message Received: " + e.Data);
-            if (e.Data.StartsWith("phonecall:")){
+            if (e.Data.StartsWith("command:")){
+                _actions.Enqueue(() => ProcessCommand(e.Data));
+            }
+            else if (e.Data.StartsWith("phonecall:")){
                 _actions.Enqueue(() => ProcessCall(e.Data));
             }
         };
+    }
+
+    void ProcessCommand(string _command){
+        string command = _command.Replace("command:","");
+        switch (command){
+            case "SetCardAvailable":
+                MenuManager menuManager;
+                menuManager = FindAnyObjectByType<MenuManager>();
+                menuManager.ActivateMenu(menuManager.menus[2]);
+                ScanCard scanCard = FindAnyObjectByType<ScanCard>();
+                scanCard.EnableCard();
+            break;
+            case "StopCall":
+                callManager.StopAllCalls();
+            break;
+        }
     }
 
     void ProcessCall(string _call){

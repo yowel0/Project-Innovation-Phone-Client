@@ -24,19 +24,6 @@ public class Gyroscope : MonoBehaviour
         circleStartPos = directionCircle.position;
     }
 
-    void OnEnable()
-    {
-        EVM_Case evm = FindAnyObjectByType<EVM_Case>();
-        MenuManager menuManager = FindAnyObjectByType<MenuManager>();
-        evm.ButtonAddListener(evm.mainButtons[1], menuManager.ActivateHome);
-    }
-
-    void OnDisable()
-    {
-        EVM_Case evm = FindAnyObjectByType<EVM_Case>();
-        evm.ButtonRemoveAllListeners(evm.mainButtons[1]);
-    }
-
     // Update is called once per frame
     void Update()
     {
