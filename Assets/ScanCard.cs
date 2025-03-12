@@ -34,7 +34,11 @@ public class ScanCard : MonoBehaviour
     [SerializeField]
     TextMeshProUGUI statusText;
     [SerializeField]
-    TextMeshProUGUI noCardText;
+    GameObject noCardText;
+    [SerializeField]
+    Image statusImage;
+    [SerializeField]
+    Sprite[] sprites;
 
     [SerializeField]
     float timer = 0;
@@ -44,7 +48,7 @@ public class ScanCard : MonoBehaviour
     float timerPadding = 0.3f;
     bool swiping = false;
 
-    bool cardAvailable = false;
+    public bool cardAvailable = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -159,30 +163,37 @@ public class ScanCard : MonoBehaviour
 
     void NewSetUI(){
         if (cardAvailable){
-            statusText.gameObject.SetActive(true);
+            // statusText.gameObject.SetActive(true);
             progressBar.gameObject.SetActive(true);
-            noCardText.gameObject.SetActive(false);
+            // noCardText.gameObject.SetActive(false);
+            statusImage.sprite = sprites[1];
             progressBar.value = progress;
             progressBar.maxValue = progressGoal;
             if (scanned){
-                statusText.text = "Scanned";
+                // statusText.text = "Scanned";
+                    statusImage.sprite = sprites[4];
             }
             else if (progress == progressGoal){
                 if (timer < timerMax - timerPadding){
-                    statusText.text = "Too Fast";
+                    // statusText.text = "Too Fast";
+                    statusImage.sprite = sprites[3];
                 }
                 else if (timer > timerMax + timerPadding ){
-                    statusText.text = "Too Slow";
+                    // statusText.text = "Too Slow";
+                    statusImage.sprite = sprites[2];
                 }
             }
             else{
                 statusText.text = "Move Phone To Scan";
+                statusImage.sprite = sprites[1];
             }
         }
         else{
-            statusText.gameObject.SetActive(false);
+            // statusText.gameObject.SetActive(false);
             progressBar.gameObject.SetActive(false);
-            noCardText.gameObject.SetActive(true);
+            // noCardText.gameObject.SetActive(true);
+            statusImage.sprite = sprites[0];
+            
         }
     }
 

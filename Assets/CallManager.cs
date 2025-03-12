@@ -9,14 +9,15 @@ public class CallManager : MonoBehaviour
     PhoneCall callPrefab;
     Queue<int> callQueue = new Queue<int>();
     [SerializeField]
-    RectTransform callParent;
+    GameObject callParent;
     [SerializeField]
     List<AudioClip> audioClips;
-    PhoneCall activeCall;
+    public PhoneCall activeCall;
+    MenuManager menuManager;
     // Start is called before the first frame update
     void Start()
     {
-        
+        menuManager = FindAnyObjectByType<MenuManager>();
     }
 
     // Update is called once per frame
@@ -32,6 +33,7 @@ public class CallManager : MonoBehaviour
     }
 
     void StartNextCall(){
+        menuManager.ActivateMenu(callParent);
         //activeCall = Instantiate(callPrefab,callParent.transform);
         activeCall = Instantiate(callPrefab,callParent.transform);
         activeCall.voiceLine = audioClips[callQueue.Dequeue()];

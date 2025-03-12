@@ -41,7 +41,7 @@ public class PhoneCall : MonoBehaviour
         }
     }
 
-    void AcceptCall(){
+    public void AcceptCall(){
         callAccepted = true;
 
         incomingCall.SetActive(false);
@@ -51,5 +51,11 @@ public class PhoneCall : MonoBehaviour
         audioSource.Stop();
         audioSource.clip = voiceLine;
         audioSource.Play();
+    }
+
+    void OnDestroy()
+    {
+        MenuManager menuManager = FindAnyObjectByType<MenuManager>();
+        menuManager.ActivateHome();
     }
 }

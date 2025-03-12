@@ -23,9 +23,6 @@ public class Home : MonoBehaviour
         evm.ButtonAddListener(evm.numberButtons[3],() =>{
             callManager.StartCall(0);
         });
-        evm.ButtonAddListener(evm.numberButtons[4],() =>{
-            callManager.StopAllCalls();
-        });
     }
 
     void OnDisable()

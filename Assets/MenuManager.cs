@@ -38,7 +38,10 @@ public class MenuManager : MonoBehaviour
     }
 
     public void ActivateHome(){
-        ActivateMenu(0);
+        CallManager callManager = FindAnyObjectByType<CallManager>();
+        if (callManager.activeCall == null){
+            ActivateMenu(0);
+        }
     }
 
     void DeactivateMenus(){

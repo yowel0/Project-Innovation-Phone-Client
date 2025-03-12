@@ -22,14 +22,14 @@ public class Keypad : MonoBehaviour
         }
         ResetCode();
 
-        evm.ButtonAddListener(evm.mainButtons[0],ResetCode);
+        evm.ButtonAddListener(evm.mainButtons[1],ResetCode);
         evm.ButtonAddListener(evm.mainButtons[2],ConfirmCode);
     }
 
     void OnDisable()
     {
         evm.AllButtonsRemoveAllListeners();
-        evm.ButtonRemoveAllListeners(evm.mainButtons[0]);
+        evm.ButtonRemoveAllListeners(evm.mainButtons[1]);
         evm.ButtonRemoveAllListeners(evm.mainButtons[2]);
     }
 
@@ -46,7 +46,7 @@ public class Keypad : MonoBehaviour
     }
 
     public void AddInt(int _int){
-        if (code != ""){
+        if (code.Length >= 4){
             code = code.Remove(0,1);
         }
         code += _int.ToString();
@@ -55,12 +55,14 @@ public class Keypad : MonoBehaviour
     }
 
     public void ConfirmCode(){
-        webSocket_Phone_Client.SendWebSocetCode(code);
-        ResetCode();
+        if (code.Length >= 4){
+            webSocket_Phone_Client.SendWebSocetCode(code);
+            ResetCode();
+        }
     }
 
     public void ResetCode(){
-        code = "####";
+        code = "";
         SetUI();
     }
 
