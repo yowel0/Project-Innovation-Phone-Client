@@ -37,6 +37,8 @@ public class PhoneCall : MonoBehaviour
         }
         if (callAccepted && !audioSource.isPlaying){
             //Call ended
+            print("call end");
+            OpenHome();
             Destroy(gameObject);
         }
     }
@@ -53,9 +55,10 @@ public class PhoneCall : MonoBehaviour
         audioSource.Play();
     }
 
-    void OnDestroy()
+    void OpenHome()
     {
         MenuManager menuManager = FindAnyObjectByType<MenuManager>();
+        print(menuManager);
         menuManager.ActivateHome();
     }
 }

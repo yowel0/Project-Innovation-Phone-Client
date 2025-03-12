@@ -164,7 +164,12 @@ public class ScanCard : MonoBehaviour
     void NewSetUI(){
         if (cardAvailable){
             // statusText.gameObject.SetActive(true);
-            progressBar.gameObject.SetActive(true);
+            if (progress != progressGoal){
+                progressBar.gameObject.SetActive(true);
+            }
+            else {
+                progressBar.gameObject.SetActive(false);
+            }
             // noCardText.gameObject.SetActive(false);
             statusImage.sprite = sprites[1];
             progressBar.value = progress;

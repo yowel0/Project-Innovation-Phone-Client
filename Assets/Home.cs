@@ -12,10 +12,10 @@ public class Home : MonoBehaviour
         menuManager = FindAnyObjectByType<MenuManager>();
         CallManager callManager = FindAnyObjectByType<CallManager>();
         evm.ButtonAddListener(evm.numberButtons[0],() =>{
-            menuManager.ActivateMenu(menuManager.menus[3]);
+            menuManager.ActivateMenu(menuManager.menus[2]);
         });
         evm.ButtonAddListener(evm.numberButtons[1],() =>{
-            menuManager.ActivateMenu(menuManager.menus[2]);
+            menuManager.ActivateMenu(menuManager.menus[3]);
         });
         evm.ButtonAddListener(evm.numberButtons[2],() =>{
             menuManager.ActivateMenu(menuManager.menus[1]);

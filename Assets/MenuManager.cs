@@ -39,7 +39,7 @@ public class MenuManager : MonoBehaviour
 
     public void ActivateHome(){
         CallManager callManager = FindAnyObjectByType<CallManager>();
-        if (callManager.activeCall == null){
+        if (callManager.callQueue.Count <= 0){
             ActivateMenu(0);
         }
     }

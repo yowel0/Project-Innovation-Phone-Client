@@ -7,12 +7,12 @@ public class CallManager : MonoBehaviour
 {
     [SerializeField]
     PhoneCall callPrefab;
-    Queue<int> callQueue = new Queue<int>();
+    public Queue<int> callQueue = new Queue<int>();
     [SerializeField]
     GameObject callParent;
     [SerializeField]
     List<AudioClip> audioClips;
-    public PhoneCall activeCall;
+    PhoneCall activeCall;
     MenuManager menuManager;
     // Start is called before the first frame update
     void Start()
