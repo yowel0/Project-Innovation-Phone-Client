@@ -12,7 +12,7 @@ public class CallManager : MonoBehaviour
     GameObject callParent;
     [SerializeField]
     List<AudioClip> audioClips;
-    PhoneCall activeCall;
+    public PhoneCall activeCall;
     MenuManager menuManager;
     // Start is called before the first frame update
     void Start()
@@ -23,6 +23,7 @@ public class CallManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        print("acitve call: " + activeCall + " callqueuecoutn" + callQueue.Count);
         if (activeCall == null && callQueue.Count > 0){
             StartNextCall();
         }
@@ -44,5 +45,6 @@ public class CallManager : MonoBehaviour
         callQueue.Clear();
         //activeCall.GetComponent<AudioSource>().Stop();
         Destroy(activeCall.gameObject);
+        activeCall = null;
     }
 }

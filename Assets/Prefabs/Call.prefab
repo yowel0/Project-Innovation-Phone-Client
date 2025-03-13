@@ -143,7 +143,7 @@ MonoBehaviour:
   voiceLine: {fileID: 8300000, guid: 7c20eb37e902f5e42bfbf002df3de07c, type: 3}
   incomingCall: {fileID: 2463178908993603119}
   calling: {fileID: 7803248696516108161}
-  pickUpTimer: 3
+  pickUpTimer: 10
 --- !u!82 &5415201982330097725
 AudioSource:
   m_ObjectHideFlags: 0
@@ -154,7 +154,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 8b9547df163027c4384e44c104e651f5, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 3402107384b68084aa81ff729d654fe9, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1

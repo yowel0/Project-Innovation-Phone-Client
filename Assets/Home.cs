@@ -20,9 +20,6 @@ public class Home : MonoBehaviour
         evm.ButtonAddListener(evm.numberButtons[2],() =>{
             menuManager.ActivateMenu(menuManager.menus[1]);
         });
-        evm.ButtonAddListener(evm.numberButtons[3],() =>{
-            callManager.StartCall(0);
-        });
     }
 
     void OnDisable()

@@ -24,9 +24,9 @@ public class PhoneCall : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space)){
-            AcceptCall();
-        }
+        // if (Input.GetKeyDown(KeyCode.Space)){
+        //     AcceptCall();
+        // }
         if (pickUpTimer > 0){
             pickUpTimer -= Time.deltaTime;
         }
@@ -38,7 +38,12 @@ public class PhoneCall : MonoBehaviour
         if (callAccepted && !audioSource.isPlaying){
             //Call ended
             print("call end");
-            OpenHome();
+            CallManager callManager;
+            callManager = FindAnyObjectByType<CallManager>();
+            if (callManager.callQueue.Count <= 0){
+                OpenHome();
+            }
+            callManager.activeCall = null;
             Destroy(gameObject);
         }
     }
@@ -58,7 +63,6 @@ public class PhoneCall : MonoBehaviour
     void OpenHome()
     {
         MenuManager menuManager = FindAnyObjectByType<MenuManager>();
-        print(menuManager);
         menuManager.ActivateHome();
     }
 }
