@@ -23,7 +23,6 @@ public class CallManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        print("acitve call: " + activeCall + " callqueuecoutn" + callQueue.Count);
         if (activeCall == null && callQueue.Count > 0){
             StartNextCall();
         }

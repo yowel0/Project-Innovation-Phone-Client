@@ -143,7 +143,7 @@ MonoBehaviour:
   voiceLine: {fileID: 8300000, guid: 7c20eb37e902f5e42bfbf002df3de07c, type: 3}
   incomingCall: {fileID: 2463178908993603119}
   calling: {fileID: 7803248696516108161}
-  pickUpTimer: 10
+  pickUpTimer: 3
 --- !u!82 &5415201982330097725
 AudioSource:
   m_ObjectHideFlags: 0

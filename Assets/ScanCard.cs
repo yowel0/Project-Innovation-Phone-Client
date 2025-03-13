@@ -57,7 +57,7 @@ public class ScanCard : MonoBehaviour
 
     void OnEnable()
     {
-        ResetValues(0);
+        StartCoroutine(ResetValues(0));
     }
 
     // Update is called once per frame
@@ -111,7 +111,7 @@ public class ScanCard : MonoBehaviour
 
     public void EnableCard(){
         cardAvailable = true;
-        StartCoroutine(ResetValues(1));
+        //StartCoroutine(ResetValues(1));
     }
 
     void StartSwiping(){
