@@ -7,22 +7,14 @@ using UnityEngine.XR;
 
 public class ScanCard : MonoBehaviour
 {
-    public GameObject test;
     [SerializeField]
     WebSocket_Phone_Client webSocket_Phone_Client;
 
     
 
     float acceleration;
-    [SerializeField]
-    float minAcceleration;
-    [SerializeField]
-    float maxAcceleration;
 
-    [SerializeField]
-    [Tooltip("per second")]
-    float progressSpeed = 1;
-    [Range(0f, 100f)]
+    [Range(0f, 1f)]
     public float progress;
     [SerializeField]
     float progressGoal;
@@ -31,10 +23,6 @@ public class ScanCard : MonoBehaviour
     [SerializeField]
     Slider progressBar;
     bool scanned = false;
-    [SerializeField]
-    TextMeshProUGUI statusText;
-    [SerializeField]
-    GameObject noCardText;
     [SerializeField]
     Image statusImage;
     [SerializeField]
@@ -57,15 +45,13 @@ public class ScanCard : MonoBehaviour
 
     void OnEnable()
     {
-        StartCoroutine(ResetValues(0));
+        ResetValues();
     }
 
     // Update is called once per frame
     void Update()
     {
         acceleration = Vector3.Magnitude(Input.gyro.userAcceleration);
-        //print(acceleration);
-        test.transform.position = Input.gyro.userAcceleration;
 
         if(cardAvailable){
             if (!swiping && acceleration > 0.2f && progress != progressGoal){
@@ -77,41 +63,11 @@ public class ScanCard : MonoBehaviour
         }
 
         NewSetUI();
-
-        //^new not done yet
-
-
-        // if (progress <= 0){
-        //     scanned = false;
-        // }
-        // if (acceleration < minAcceleration){
-        //     print("Too Slow");
-        //     progress -= progressSpeed * 2 * Time.deltaTime;
-        // }
-        // else if (acceleration > maxAcceleration){
-        //     print("Too Fast");
-        //     progress -= progressSpeed * 2 * Time.deltaTime;
-        // }
-        // else if (scanned){
-        //     print("scanned");
-        //     progress -= progressSpeed * 2 * Time.deltaTime;
-        // }
-        // else{
-        //     print("In Range");
-        //     if (!scanned){
-        //         progress += progressSpeed * Time.deltaTime;
-        //     }
-        //     if (progress >= 1){
-        //         Scan();
-        //     }
-        // }
-        // progress = Mathf.Clamp(progress,0f,1f);
-        // SetUI();
     }
 
     public void EnableCard(){
         cardAvailable = true;
-        //StartCoroutine(ResetValues(1));
+        ResetValues();
     }
 
     void StartSwiping(){
@@ -131,11 +87,9 @@ public class ScanCard : MonoBehaviour
         progress = progressGoal;
         swiping = false;
         if (timer < timerMax - timerPadding){
-            //print("toofast");
             FailScan();
         }
         else if (timer > timerMax + timerPadding){
-            //print("too slow");
             FailScan();
         }
         else{
@@ -146,7 +100,10 @@ public class ScanCard : MonoBehaviour
 
     IEnumerator ResetValues(int seconds){
         yield return new WaitForSeconds(seconds);
-        print("reset");
+        ResetValues();
+    }
+
+    void ResetValues(){
         scanned = false;
         timer = 0;
         progress = 0;
@@ -163,67 +120,34 @@ public class ScanCard : MonoBehaviour
 
     void NewSetUI(){
         if (cardAvailable){
-            // statusText.gameObject.SetActive(true);
             if (progress != progressGoal){
                 progressBar.gameObject.SetActive(true);
             }
             else {
                 progressBar.gameObject.SetActive(false);
             }
-            // noCardText.gameObject.SetActive(false);
             statusImage.sprite = sprites[1];
             progressBar.value = progress;
             progressBar.maxValue = progressGoal;
             if (scanned){
-                // statusText.text = "Scanned";
                     statusImage.sprite = sprites[4];
             }
             else if (progress == progressGoal){
                 if (timer < timerMax - timerPadding){
-                    // statusText.text = "Too Fast";
                     statusImage.sprite = sprites[3];
                 }
                 else if (timer > timerMax + timerPadding ){
-                    // statusText.text = "Too Slow";
                     statusImage.sprite = sprites[2];
                 }
             }
             else{
-                statusText.text = "Move Phone To Scan";
                 statusImage.sprite = sprites[1];
             }
         }
         else{
-            // statusText.gameObject.SetActive(false);
             progressBar.gameObject.SetActive(false);
-            // noCardText.gameObject.SetActive(true);
             statusImage.sprite = sprites[0];
             
         }
-    }
-
-    void SetUI(){
-        progressBar.value = progress;
-        if (scanned){
-            statusText.text = "Scanned";
-        }
-        else if (acceleration < minAcceleration){
-            statusText.text = "Too Slow";
-        }
-        else if (acceleration > maxAcceleration){
-            statusText.text = "Too Fast";
-        }
-        else{
-            statusText.text = "Scanning...";
-        }
-    }
-
-    void OnDrawGizmos()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawLine(new Vector3(0,minAcceleration*10,0), new Vector3(1,minAcceleration*10,0));
-        Gizmos.DrawLine(new Vector3(0,maxAcceleration*10,0), new Vector3(1,maxAcceleration*10,0));
-        Gizmos.color = Color.green;
-        Gizmos.DrawLine(new Vector3(0,acceleration*10,0), new Vector3(1,acceleration*10,0));
     }
 }
