@@ -41,9 +41,9 @@ public class CallManager : MonoBehaviour
     }
 
     public void StopAllCalls(){
-        callQueue.Clear();
-        //activeCall.GetComponent<AudioSource>().Stop();
         Destroy(activeCall.gameObject);
-        activeCall = null;
+        //activeCall = null;
+        callQueue.Clear();
+        menuManager.ActivateHome();
     }
 }

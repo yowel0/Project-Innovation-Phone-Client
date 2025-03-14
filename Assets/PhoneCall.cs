@@ -38,12 +38,12 @@ public class PhoneCall : MonoBehaviour
         if (callAccepted && !audioSource.isPlaying){
             //Call ended
             print("call end");
-            CallManager callManager;
-            callManager = FindAnyObjectByType<CallManager>();
-            if (callManager.callQueue.Count <= 0){
-                OpenHome();
-            }
-            callManager.activeCall = null;
+            // CallManager callManager;
+            // callManager = FindAnyObjectByType<CallManager>();
+            // if (callManager.callQueue.Count <= 0){
+            //     OpenHome();
+            // }
+            //callManager.activeCall = null;
             Destroy(gameObject);
         }
     }
@@ -64,5 +64,15 @@ public class PhoneCall : MonoBehaviour
     {
         MenuManager menuManager = FindAnyObjectByType<MenuManager>();
         menuManager.ActivateHome();
+    }
+
+    void OnDestroy()
+    {
+        CallManager callManager;
+        callManager = FindAnyObjectByType<CallManager>();
+        if (callManager.callQueue.Count <= 0){
+            OpenHome();
+        }
+        callManager.activeCall = null;
     }
 }
